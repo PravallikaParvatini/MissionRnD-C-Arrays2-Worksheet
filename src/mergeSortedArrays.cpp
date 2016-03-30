@@ -23,5 +23,82 @@ struct transaction {
 };
 
 struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	return NULL;
+	int y1, y2, m1, m2, d1, d2, i = ALen + BLen - 1;
+	if ((A == NULL || B == NULL) || ALen < 0 || BLen < 0)
+		return NULL;
+	struct transaction *result; 
+	result = (struct transaction*)malloc((ALen + BLen)*sizeof(struct transaction));
+	while (ALen > 0 && BLen > 0)
+	{
+		y1 = (A[ALen - 1].date[6] - '0') * 1000 + (A[ALen - 1].date[7] - '0') * 100 + (A[ALen - 1].date[8] - '0') * 10 + (A[ALen - 1].date[9] - '0');
+		y2 = (B[BLen - 1].date[6] - '0') * 1000 + (B[BLen - 1].date[7] - '0') * 100 + (B[BLen - 1].date[8] - '0') * 10 + (B[BLen - 1].date[9] - '0');
+		if (y1 > y2)
+		{
+			result[i] = A[ALen - 1];
+			i--;
+			ALen--;
+		}
+		if (y2 > y1)
+		{
+			result[i] = B[BLen - 1];
+			i--;
+			BLen--;
+		}
+		if (y1 == y2)
+		{
+			m1 = (A[ALen - 1].date[3] - '0') * 10 + (A[ALen - 1].date[4] - '0');
+			m2 = (B[BLen - 1].date[3] - '0') * 10 + (B[BLen - 1].date[4] - '0');
+			if (m1 > m2)
+			{
+				result[i] = A[ALen - 1];
+				i--;
+				ALen--;
+			}
+			if (m2 > m1)
+			{
+				result[i] = B[BLen - 1];
+				i--;
+				BLen--;
+			}
+			if (m1 == m2)
+			{
+				d1 = (A[ALen - 1].date[0] - '0') * 10 +(A[ALen - 1].date[1]-'0');
+				d2 = (B[BLen - 1].date[0] - '0') * 10 + (B[BLen - 1].date[1]-'0');
+				if (d1 > d2)
+				{
+					result[i] = A[ALen - 1];
+					i--;
+					ALen--;
+				}
+				if (d2 > d1)
+				{
+					result[i] = B[BLen - 1];
+					i--;
+					BLen--;
+				}
+				if (d1 == d2)
+				{
+					result[i] = A[ALen - 1];
+					i--;
+					ALen--;
+					result[i] = B[BLen - 1];
+					i--;
+					BLen--;
+				}
+			}
+		}
+	}
+	while (ALen > 0)
+	{
+		result[i] = A[ALen - 1];
+		i--;
+		ALen--;
+	}
+	while (BLen > 0)
+	{
+		result[i] = B[ BLen - 1]; 
+		i--;
+		BLen--;
+	}
+	return result;
 }

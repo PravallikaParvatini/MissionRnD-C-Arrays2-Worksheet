@@ -14,7 +14,18 @@ NOTES:
 There are better ways of solving the problem than a brute-force solution which is of O(n^2)
 complexity .
 */
-
+#include<stdio.h>
 int findSingleOccurenceNumber(int *A, int len) {
-	return -1;
-}
+	int ones=0,twos=0,common,i;
+	if (A == NULL || len <= 0)
+		return -1;
+	for (i = 0; i < len; i++)
+	{
+		twos = twos | (ones&A[i]);
+		ones = ones^A[i];
+		common = ~(ones&twos);
+		ones &= common;
+		twos &= common;
+	}
+	return ones;
+	}
