@@ -16,16 +16,16 @@ complexity .
 */
 #include<stdio.h>
 int findSingleOccurenceNumber(int *A, int len) {
-	int ones=0,twos=0,common,i;
+	int a = 0, b = 0, i, common;
 	if (A == NULL || len <= 0)
 		return -1;
 	for (i = 0; i < len; i++)
 	{
-		twos = twos | (ones&A[i]);
-		ones = ones^A[i];
-		common = ~(ones&twos);
-		ones &= common;
-		twos &= common;
+		b = b | (a&A[i]);
+		a = a^A[i];
+		common = ~(a&b);
+		a &= common;
+		b &= common;
 	}
-	return ones;
+	return a;
 	}
